@@ -1,6 +1,6 @@
 {
   "name": "@madewithpixels/frame-probe",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Drop-in frame-timing probe: one inline loader, ?probe in the address, a list of slow frames and what caused them.",
   "browser": "dist/frame-probe.min.js",
   "files": [

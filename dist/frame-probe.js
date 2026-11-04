@@ -1,5 +1,5 @@
 /*!
- * frame-probe v1.0.0 | madewithpixels | github.com/madewithpixels/frame-probe
+ * frame-probe v1.0.1 | github.com/madewithpixels/frame-probe
  * Finds what makes page animations stutter. Runs only when the address has ?probe.
  */
 (function () {
@@ -73,18 +73,6 @@
       return r;
     };
   }, 20);
-  // faulty-terminal (madewithpixels): ready, logo hand-off, and the logo timeline's position as context
-  d.addEventListener('faulty-terminal:ready', function () {
-    mark('faulty-terminal ready');
-  });
-  d.addEventListener('faulty-terminal:logo-resolved', function () {
-    mark('faulty-terminal logo hand-off');
-  });
-  contextFns.push(function () {
-    var ft = w.FaultyTerminal,
-      lt = ft && ft.instances && ft.instances[0] && ft.instances[0].logoTimeline;
-    return lt && (lt.playing || lt.time > 0) ? 'logo ' + Math.round(lt.time) : '';
-  });
 
   function frame(t) {
     if (last) frames.push([Math.round(last), Math.round(t - last), Math.round(worstLate), context()]);
@@ -105,7 +93,7 @@
       return f[1] > THRESHOLD;
     });
     var lines = [];
-    lines.push('frame-probe v1.0.0 · first ' + DURATION + 'ms · frames over ' + THRESHOLD + 'ms');
+    lines.push('frame-probe v1.0.1 · first ' + DURATION + 'ms · frames over ' + THRESHOLD + 'ms');
     lines.push('');
     lines.push('SLOW FRAMES   at ms | frame ms | page code busy ms | context');
     if (!slow.length) lines.push('  none');
@@ -178,7 +166,7 @@
   }
 
   var api = {
-    version: '1.0.0',
+    version: '1.0.1',
     // Label your own events: frameProbe.mark('menu opened')
     mark: mark,
     // Add a context column: frameProbe.context(function () { return 'slide ' + current; })

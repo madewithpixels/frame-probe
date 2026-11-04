@@ -2,7 +2,7 @@
 
 Find what makes your page animations stutter. Add one inline loader, open the page with `?probe` in the address, and after a few seconds a small box lists every slow frame, whether the page's own code was busy during it, and what else happened at the same moment (page load, scroll re-measures, your own marks).
 
-Built on 4 November 2026 to find a Safari-only stutter in the madewithpixels hero animation. Three runs with the probe showed the cause. Hours of guessing hadn't: a half-second block of Webflow start-up work landing in the middle of the animation.
+It needs nothing installed, works on any site (Webflow, WordPress, plain HTML) and in any modern browser, and costs nothing for normal visitors.
 
 ## Install (Webflow or any site)
 
@@ -11,7 +11,7 @@ Paste this into the page's **head** custom code (Webflow: Page settings → Cust
 ```html
 <script>
   if (/[?&]probe\b/.test(location.search))
-    document.write('<script src="https://cdn.jsdelivr.net/gh/madewithpixels/frame-probe@1.0.0/dist/frame-probe.min.js"><\/script>');
+    document.write('<script src="https://cdn.jsdelivr.net/gh/madewithpixels/frame-probe@1.0.1/dist/frame-probe.min.js"><\/script>');
 </script>
 ```
 
@@ -38,9 +38,9 @@ Each slow frame line: **at ms** (since the page started loading) · **frame ms**
 
 - **Busy close to the frame time:** the page's own code blocked it, such as scripts, layout or interactions starting up. Look at the events around the same time.
 - **Busy near 0:** the main thread was free, so the delay was on the browser's graphics side (GPU, compositing, very large canvases or filters).
-- **Context:** whatever your code reports (see below). For faulty-terminal pages it shows the logo timeline's position, for example `logo 550`.
+- **Context:** whatever your own code reports at that moment (see below), for example which slide or animation step was showing.
 
-Events logged automatically: `DOMContentLoaded`, `page load`, every GSAP `ScrollTrigger.refresh` with its duration (Webflow interactions use ScrollTrigger), and the faulty-terminal `ready` and logo hand-off.
+Events logged automatically: `DOMContentLoaded`, `page load`, and every GSAP `ScrollTrigger.refresh` with how long it took (Webflow interactions and many other sites use ScrollTrigger).
 
 The results are also printed in the browser console and available as `frameProbe.results` (`frames`, `events`, `text`).
 
@@ -62,18 +62,14 @@ if (window.frameProbe) {
 - Busy time is measured by a 5ms timer, so it's accurate to about 5ms and can read slightly over the frame time.
 - It shows **when** the page was busy, not **which** function. For that, record the same moment in the browser's own profiler (Safari: Develop → Show Web Inspector → Timelines).
 
-## Develop
+## Changing the probe
 
-```
-npm install
-npm test        # builds dist/ and runs a headless check (needs Playwright installed)
-```
+Using it needs nothing installed. Only if you edit `src/frame-probe.js` do you need to rebuild the file the loader fetches: run `npm install` once, then `npm run build`, which writes `dist/`. `dist/` is committed because jsDelivr serves files straight from the repo.
 
-`dist/` is committed because jsDelivr serves files straight from the repo. Release steps:
-1. Bump `package.json`.
-2. Run `npm test`.
-3. Update CHANGELOG.
-4. Commit and push.
-5. Publish a GitHub release whose tag is the version number without "v" (for example `1.0.1`).
+To release a new version:
+1. Bump the version in `package.json` and run `npm run build`.
+2. Add a CHANGELOG entry, then commit and push.
+3. Publish a GitHub release whose tag is the version number without "v" (for example `1.0.2`).
+4. Update the version in your sites' loader.
 
 Never move or re-create a published tag: jsDelivr caches it permanently.

@@ -1,5 +1,5 @@
 /*!
- * frame-probe v__VERSION__ | madewithpixels | github.com/madewithpixels/frame-probe
+ * frame-probe v__VERSION__ | github.com/madewithpixels/frame-probe
  * Finds what makes page animations stutter. Runs only when the address has ?probe.
  */
 (function () {
@@ -73,18 +73,6 @@
       return r;
     };
   }, 20);
-  // faulty-terminal (madewithpixels): ready, logo hand-off, and the logo timeline's position as context
-  d.addEventListener('faulty-terminal:ready', function () {
-    mark('faulty-terminal ready');
-  });
-  d.addEventListener('faulty-terminal:logo-resolved', function () {
-    mark('faulty-terminal logo hand-off');
-  });
-  contextFns.push(function () {
-    var ft = w.FaultyTerminal,
-      lt = ft && ft.instances && ft.instances[0] && ft.instances[0].logoTimeline;
-    return lt && (lt.playing || lt.time > 0) ? 'logo ' + Math.round(lt.time) : '';
-  });
 
   function frame(t) {
     if (last) frames.push([Math.round(last), Math.round(t - last), Math.round(worstLate), context()]);

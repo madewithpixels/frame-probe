@@ -1,0 +1,22 @@
+{
+  "name": "@madewithpixels/frame-probe",
+  "version": "1.0.0",
+  "description": "Drop-in frame-timing probe: one inline loader, ?probe in the address, a list of slow frames and what caused them.",
+  "browser": "dist/frame-probe.min.js",
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/build.mjs && node test/smoke.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/madewithpixels/frame-probe.git"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.0"
+  }
+}

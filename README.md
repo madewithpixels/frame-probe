@@ -17,7 +17,7 @@ Paste this into the page's **head** custom code (Webflow: Page settings → Cust
 
 Normal visitors and PageSpeed Insights never download anything: the loader is one line that checks the address and stops. With `?probe`, the probe loads straight away, early enough to catch the page's start-up frames. It uses `document.write` for that reason, and only in probe mode.
 
-Publish the site before testing. Webflow's Designer doesn't run custom code.
+Publish the site before testing.
 
 ## Use
 
